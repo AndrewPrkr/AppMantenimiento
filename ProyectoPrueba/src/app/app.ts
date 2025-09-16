@@ -3,7 +3,6 @@ import { Router, RouterOutlet } from '@angular/router';
 import { Servicedate } from './service/servicedate';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-import { AuthService } from './service/auth-service';
 
 @Component({
   selector: 'app-root',
