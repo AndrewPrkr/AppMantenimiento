@@ -31,6 +31,8 @@ sequelize.sync({ force: false })
 
 // Routes
 app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/fleet', require('./routes/fleet.routes'));
+
 
 // Test route
 app.get('/', (req, res) => {

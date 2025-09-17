@@ -1,1 +1,17 @@
-<p>operadorcomponent works!</p>
+<div class="flex flex-col items-center">
+  <img src="assets/logo-gcc.png" class="h-16 my-2" alt="GCC Logo"/>
+  <div class="w-full max-w-xs p-6">
+    <button (click)="goToTractoReporte()" class="w-full flex justify-between items-center bg-gray-400 text-white rounded-lg px-4 py-3 mb-3 hover:bg-gray-500 transition">
+      Generar Reporte Tractocamion
+      <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 13l4 4L19 7"/></svg>
+    </button>
+    <button (click)="goToRemolqueReporte()" class="w-full flex justify-between items-center bg-gray-400 text-white rounded-lg px-4 py-3 mb-3 hover:bg-gray-500 transition">
+      Generar Reporte Remolque
+      <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 13l4 4L19 7"/></svg>
+    </button>
+    <button (click)="goToConsultaReportes()" class="w-full flex justify-between items-center bg-gray-400 text-white rounded-lg px-4 py-3 hover:bg-gray-500 transition">
+      Consultar Reporte
+      <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2" /></svg>
+    </button>
+  </div>
+</div>
