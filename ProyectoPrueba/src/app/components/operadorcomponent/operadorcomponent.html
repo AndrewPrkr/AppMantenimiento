@@ -1,17 +1,51 @@
-<div class="flex flex-col items-center">
-  <img src="assets/logo-gcc.png" class="h-16 my-2" alt="GCC Logo"/>
-  <div class="w-full max-w-xs p-6">
-    <button (click)="goToTractoReporte()" class="w-full flex justify-between items-center bg-gray-400 text-white rounded-lg px-4 py-3 mb-3 hover:bg-gray-500 transition">
-      Generar Reporte Tractocamion
-      <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 13l4 4L19 7"/></svg>
-    </button>
-    <button (click)="goToRemolqueReporte()" class="w-full flex justify-between items-center bg-gray-400 text-white rounded-lg px-4 py-3 mb-3 hover:bg-gray-500 transition">
-      Generar Reporte Remolque
-      <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 13l4 4L19 7"/></svg>
-    </button>
-    <button (click)="goToConsultaReportes()" class="w-full flex justify-between items-center bg-gray-400 text-white rounded-lg px-4 py-3 hover:bg-gray-500 transition">
-      Consultar Reporte
-      <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2" /></svg>
-    </button>
+<div class="min-h-screen flex flex-col items-center justify-center px-6 bg-gradient-to-r from-blue-400 to-blue-200 text-gray-900">
+  <!-- Logo principal -->
+  <img src="Logo/Logoinicio.png" alt="GCC Logo" class="h-20 mb-4 drop-shadow-lg" />
+
+  <!-- Título -->
+  <h2 class="text-3xl font-extrabold text-blue-800 mb-2 tracking-wide text-center">GENERAR REPORTE</h2>
+
+  <!-- Bienvenida personalizada -->
+  <p class="text-lg font-medium text-gray-700 mb-6 text-center">
+    ¡Bienvenido, <span class="text-blue-700 font-semibold">Operador</span>!
+  </p>
+
+  <!-- Sección Botones con Imágenes en grid -->
+  <div class="w-full max-w-xl bg-white bg-opacity-95 rounded-2xl shadow-xl px-6 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      
+      <!-- Primer botón + imagen -->
+      <div class="flex items-center space-x-4">
+        <img src="Logo/pipa.png" alt="Pipa de cemento" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
+        <button (click)="goToTractoReporte()" 
+          class="flex-1 text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white text-lg font-bold rounded-xl py-4 px-4 shadow-lg hover:from-blue-800 hover:to-blue-600 transition">
+          Generar Reporte Tractocamion
+        </button>
+      </div>
+
+      <!-- Segundo botón + imagen -->
+      <div class="flex items-center space-x-4">
+        <img src="Logo/trailer.png" alt="Trailer" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
+        <button (click)="goToRemolqueReporte()" 
+          class="flex-1 text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white text-lg font-bold rounded-xl py-4 px-4 shadow-lg hover:from-blue-800 hover:to-blue-600 transition">
+          Generar Reporte Remolque
+        </button>
+      </div>
+
+      <!-- Tercer botón + imagen -->
+      <div class="flex items-center space-x-4 md:col-span-2">
+        <img src="Logo/lista.png" alt="Consulta reportes" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
+        <button (click)="goToConsultaReportes()" 
+          class="flex-1 text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white text-lg font-bold rounded-xl py-4 px-4 shadow-lg hover:from-blue-800 hover:to-blue-600 transition">
+          Consultar Reporte
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer con fecha y crédito -->
+  <div class="mt-6 text-sm text-gray-700 text-center font-medium">
+    <p>{{ date | async | date:'medium' }}</p>    
+    <p>Practicante Andres Saenz Olivas <span class="font-semibold text-blue-600">2025</span></p>
   </div>
 </div>
