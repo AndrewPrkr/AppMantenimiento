@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
 const sequelize = require('../config/database');
 
 const User = sequelize.define('User', {
@@ -13,7 +14,7 @@ const User = sequelize.define('User', {
     allowNull: false
   },
   password: {
-    type: DataTypes.STRING(255),  // ✅ PERFECTO para bcrypt hashes
+    type: DataTypes.STRING(255),
     allowNull: false
   },
   full_name: {
@@ -35,11 +36,35 @@ const User = sequelize.define('User', {
     defaultValue: true
   }
 }, {
-  tableName: 'users',           // ✅ Nombre exacto de tu tabla
-  timestamps: true,             // ✅ Habilita timestamps automáticos
-  createdAt: 'created_at',      // ✅ Mapea a tu columna created_at
-  updatedAt: false,            // ✅ CRÍTICO - desactiva updatedAt (no existe en tu DB)
-  underscored: true            // ✅ Convierte camelCase a snake_case
+  tableName: 'users',
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: false,
+  underscored: true,
+  
+  // 🔐 AUTOMATIC PASSWORD HASHING HOOKS
+  hooks: {
+    // ✅ Hash password before creating new user
+    beforeCreate: async (user, options) => {
+      if (user.password) {
+        console.log('🔐 Hashing password for new user:', user.employee_number);
+        const saltRounds = 10;
+        user.password = await bcrypt.hash(user.password, saltRounds);
+        console.log('✅ Password hashed successfully');
+      }
+    },
+    
+    // ✅ Hash password before updating user (if password changed)
+    beforeUpdate: async (user, options) => {
+      // Only hash if password was actually changed
+      if (user.changed('password') && user.password) {
+        console.log('🔐 Hashing updated password for user:', user.employee_number);
+        const saltRounds = 10;
+        user.password = await bcrypt.hash(user.password, saltRounds);
+        console.log('✅ Password hashed successfully');
+      }
+    }
+  }
 });
 
 module.exports = User;

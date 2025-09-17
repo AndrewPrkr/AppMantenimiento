@@ -3,7 +3,7 @@
   <img src="Logo/Logoinicio.png" alt="Logo GCC" class="h-20 mb-10" />
   
   <!-- Banner -->
-  <h1 class="text-2xl font-semibold text-blue-900 tracking-wide pb-2 mb-1">
+  <h1 class="text-2xl font-semibold text-center text-blue-900 tracking-wide pb-2 mb-1">
     Mantenimiento Transporte
   </h1>
   
@@ -43,7 +43,7 @@
       />
       <div *ngIf="f['password'].invalid && f['password'].touched" class="text-red-500 text-xs mt-1">
         <div *ngIf="f['password'].errors?.['required']">La contraseña es requerida</div>
-        <div *ngIf="f['password'].errors?.['minlength']">La contraseña debe tener al menos 4 caracteres</div>
+        <div *ngIf="f['password'].errors?.['minlength']">Caracteres invalidos</div>
       </div>
     </div>
     
