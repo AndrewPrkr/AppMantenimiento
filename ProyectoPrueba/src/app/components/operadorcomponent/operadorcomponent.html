@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col items-center justify-center px-6 bg-gradient-to-r from-blue-400 to-blue-200 text-gray-900">
+<div class="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-r from-blue-300 to-blue-100 text-gray-900">
   <!-- Logo principal -->
   <img src="Logo/Logoinicio.png" alt="GCC Logo" class="h-20 mb-4 drop-shadow-lg" />
 
@@ -16,29 +16,32 @@
       
       <!-- Primer botón + imagen -->
       <div class="flex items-center space-x-4">
-        <img src="Logo/pipa.png" alt="Pipa de cemento" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
         <button (click)="goToTractoReporte()" 
           class="flex-1 text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white text-lg font-bold rounded-xl py-4 px-4 shadow-lg hover:from-blue-800 hover:to-blue-600 transition">
           Generar Reporte Tractocamion
-        </button>
+        </button>       
+         <img src="Logo/pipa.png" alt="Pipa de cemento" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
+
       </div>
 
       <!-- Segundo botón + imagen -->
       <div class="flex items-center space-x-4">
-        <img src="Logo/trailer.png" alt="Trailer" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
         <button (click)="goToRemolqueReporte()" 
           class="flex-1 text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white text-lg font-bold rounded-xl py-4 px-4 shadow-lg hover:from-blue-800 hover:to-blue-600 transition">
           Generar Reporte Remolque
         </button>
+                <img src="Logo/trailer.png" alt="Trailer" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
+
       </div>
 
       <!-- Tercer botón + imagen -->
       <div class="flex items-center space-x-4 md:col-span-2">
-        <img src="Logo/lista.png" alt="Consulta reportes" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
         <button (click)="goToConsultaReportes()" 
           class="flex-1 text-center bg-gradient-to-r from-blue-700 to-blue-500 text-white text-lg font-bold rounded-xl py-4 px-4 shadow-lg hover:from-blue-800 hover:to-blue-600 transition">
           Consultar Reporte
         </button>
+                <img src="Logo/lista.png" alt="Consulta reportes" class="h-16 w-16 object-contain rounded-xl drop-shadow-md" />
+
       </div>
     </div>
   </div>
