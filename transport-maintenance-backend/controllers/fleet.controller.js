@@ -4,22 +4,22 @@ const Remolque = require('../models/remolque.model');
 const getTrucks = async (req, res) => {
   try {
     const trucks = await Truck.findAll({
-      attributes: ['id', 'truck_number', 'status']
+      order: [['truck_number', 'ASC']]
     });
-    res.status(200).json(trucks);
+    res.status(200).send(trucks);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch trucks', error: error.message });
+    res.status(500).send({ message: error.message });
   }
 };
 
 const getRemolques = async (req, res) => {
   try {
     const remolques = await Remolque.findAll({
-      attributes: ['id', 'remolque_number', 'type', 'status']
+      order: [['remolque_number', 'ASC']]
     });
-    res.status(200).json(remolques);
+    res.status(200).send(remolques);
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch remolques', error: error.message });
+    res.status(500).send({ message: error.message });
   }
 };
 

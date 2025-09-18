@@ -4,9 +4,17 @@ const sequelize = require('./config/database');
 
 const app = express();
 
+// Import models to ensure associations are loaded
+require('./models/user.model');
+require('./models/truck.model');
+require('./models/remolque.model');
+require('./models/report.model');
+require('./models/reportFailure.model');
+require('./models/mechanicStatus.model');
+
 // CORS configuration
 const corsOptions = {
-  origin: "http://localhost:4200", // Angular dev server
+  origin: "http://localhost:4200",
   credentials: true
 };
 
@@ -32,32 +40,33 @@ sequelize.sync({ force: false })
 // Routes
 app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/fleet', require('./routes/fleet.routes'));
-
+app.use('/api/reports', require('./routes/reports.routes'));
 
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: "Transport Maintenance API is running!" });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-})
-
-
-
-////
-app.get('/test-users', async (req, res) => {
+// Health check endpoint
+app.get('/health', async (req, res) => {
   try {
-    const User = require('./models/user.model');
-    const users = await User.findAll({
-      attributes: ['id', 'employee_number', 'full_name', 'role', 'is_active']
+    await sequelize.authenticate();
+    res.status(200).json({
+      status: 'OK',
+      database: 'Connected',
+      timestamp: new Date().toISOString()
     });
-    res.json({ users });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(503).json({
+      status: 'Error',
+      database: 'Disconnected',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
-
-;
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
