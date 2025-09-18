@@ -2,42 +2,48 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Truck, Remolque } from '../models/report.model';
+import { CreateReportRequest, Report } from '../models/report.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FleetService {
+export class ReportsService {
   private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
-  getTrucks(): Observable<Truck[]> {
-    return this.http.get<Truck[]>(`${this.apiUrl}/fleet/trucks`).pipe(
-      tap(trucks => console.log('Trucks received:', trucks)),
+  createReport(reportData: CreateReportRequest): Observable<Report> {
+    console.log('Creating report with data:', reportData);
+    return this.http.post<Report>(`${this.apiUrl}/reports`, reportData).pipe(
+      tap(response => console.log('Report created:', response)),
       catchError(this.handleError)
     );
   }
 
-  getRemolques(): Observable<Remolque[]> {
-    return this.http.get<Remolque[]>(`${this.apiUrl}/fleet/remolques`).pipe(
-      tap(remolques => console.log('Remolques received:', remolques)),
+  getReports(): Observable<Report[]> {
+    return this.http.get<Report[]>(`${this.apiUrl}/reports`).pipe(
+      tap(reports => console.log('Reports received:', reports)),
+      catchError(this.handleError)
+    );
+  }
+
+  getReportById(id: number): Observable<Report> {
+    return this.http.get<Report>(`${this.apiUrl}/reports/${id}`).pipe(
       catchError(this.handleError)
     );
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.error('Fleet service error:', error);
+    console.error('Reports service error:', error);
     let errorMessage = 'Something went wrong; please try again later.';
     
     if (error.error instanceof ErrorEvent) {
-      // Client-side or network error
       errorMessage = error.error.message;
     } else {
-      // Backend returned unsuccessful response code
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     
     return throwError(() => new Error(errorMessage));
   }
 }
+
