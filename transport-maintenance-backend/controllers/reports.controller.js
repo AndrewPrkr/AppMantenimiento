@@ -3,7 +3,7 @@ const ReportFailure = require('../models/reportFailure.model');
 const User = require('../models/user.model');
 const sequelize = require('../config/database');
 
-// Create a new report
+// Create a new report.
 const createReport = async (req, res) => {
   const transaction = await sequelize.transaction();
   
