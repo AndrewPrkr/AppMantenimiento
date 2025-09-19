@@ -67,6 +67,14 @@
              class="text-red-500 text-xs mt-1">
           Debe seleccionar el tipo de equipo
         </div>
+
+          <div *ngIf="getSelectedTruck()" class="mb-6 p-4 bg-blue-50 rounded-lg mt-4">
+        <h4 class="text-lg font-semibold text-blue-800 mb-2">Remolque Seleccionado</h4>
+        <p class="text-gray-700"><strong>Número:</strong> {{ getSelectedTruck()?.truck_number }}</p>
+        <p class="text-gray-700"><strong>Tipo:</strong> {{ reportForm.get('equipment_type')?.value }}</p>
+      </div>
+
+
       </div>
 
       <!-- Failures Section -->

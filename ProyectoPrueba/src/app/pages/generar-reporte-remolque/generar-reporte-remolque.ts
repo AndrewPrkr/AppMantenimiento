@@ -8,7 +8,7 @@ import { FleetService } from '../../services/fleet.service';
 import { ReportsService } from '../../services/reports.service';
 import { StorageService } from '../../services/storage.service';
 import { Servicedate } from '../../services/servicedate';
-import { Remolque, CreateReportRequest } from '../../models/report.model';
+import { Remolque, CreateReportRequest, EQUIPMENT_TYPES } from '../../models/report.model';
 
 @Component({
   selector: 'app-generar-reporte-remolque',
@@ -19,11 +19,14 @@ import { Remolque, CreateReportRequest } from '../../models/report.model';
 export class GenerarReporteRemolque implements OnInit {
   reportForm!: FormGroup;
   remolques: Remolque[] = [];
+  filteredRemolques: Remolque[] = [];
   date!: Observable<Date>;
   isLoading = false;
   loadingRemolques = false;
   currentUser: any;
   errorMessage = '';
+
+  remolqueTypes = EQUIPMENT_TYPES; // ['VOLTEO', 'PIPA', 'PLATAFORMA']
 
   constructor(
     private fb: FormBuilder,
@@ -37,18 +40,25 @@ export class GenerarReporteRemolque implements OnInit {
   ngOnInit() {
     this.date = this.fecha.currentTime$;
     this.currentUser = this.storageService.getUser();
-    
-    console.log('Current user:', this.currentUser);
-    
+
     this.initializeForm();
     this.loadRemolques();
+
+    // Watch remolque type changes to filter dropdown
+    this.reportForm.get('remolque_type')?.valueChanges.subscribe(type => {
+      this.filteredRemolques = this.remolques.filter(r => r.type === type);
+      // Reset vehicle_id when type changes
+      this.reportForm.get('vehicle_id')?.setValue('');
+    });
   }
 
   initializeForm() {
     this.reportForm = this.fb.group({
+      remolque_type: ['', Validators.required],
       vehicle_id: ['', Validators.required],
       failures: this.fb.array([this.createFailureFormGroup()])
     });
+    this.filteredRemolques = [];
   }
 
   createFailureFormGroup(): FormGroup {
@@ -74,16 +84,11 @@ export class GenerarReporteRemolque implements OnInit {
   loadRemolques() {
     this.loadingRemolques = true;
     this.errorMessage = '';
-    
+
     this.fleetService.getRemolques().subscribe({
       next: (remolques) => {
-        console.log('Loaded remolques:', remolques);
         this.remolques = remolques.filter(remolque => remolque.status === 'Disponible');
         this.loadingRemolques = false;
-        
-        if (this.remolques.length === 0) {
-          this.errorMessage = 'No hay remolques disponibles';
-        }
       },
       error: (error) => {
         console.error('Error loading remolques:', error);
@@ -96,7 +101,7 @@ export class GenerarReporteRemolque implements OnInit {
   getSelectedRemolque(): Remolque | null {
     const vehicleId = this.reportForm.get('vehicle_id')?.value;
     if (!vehicleId) return null;
-    return this.remolques.find(remolque => remolque.id === parseInt(vehicleId)) || null;
+    return this.filteredRemolques.find(remolque => remolque.id === parseInt(vehicleId)) || null;
   }
 
   onSubmit() {
@@ -108,31 +113,27 @@ export class GenerarReporteRemolque implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     const selectedRemolque = this.getSelectedRemolque();
-    
+
     if (!selectedRemolque) {
       this.errorMessage = 'Debe seleccionar un remolque válido';
       this.isLoading = false;
       return;
     }
-    
+
     const reportData: CreateReportRequest = {
       vehicle_type: 'REMOLQUE',
       vehicle_id: parseInt(this.reportForm.value.vehicle_id),
       vehicle_number: selectedRemolque.remolque_number,
-      equipment_type: selectedRemolque.type,
+      equipment_type: this.reportForm.value.remolque_type,
       failures: this.reportForm.value.failures
     };
 
-    console.log('Submitting remolque report:', reportData);
-
     this.reportsService.createReport(reportData).subscribe({
       next: (response) => {
-        console.log('Remolque report created successfully:', response);
         alert(`Reporte ${response.report_number} creado exitosamente`);
         this.router.navigate(['/consultar-reportes']);
       },
       error: (error) => {
-        console.error('Error creating remolque report:', error);
         this.errorMessage = 'Error al crear el reporte: ' + error.message;
         this.isLoading = false;
       }
