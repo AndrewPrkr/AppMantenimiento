@@ -76,8 +76,9 @@ const getReportsPaginated = async (req, res) => {
 
     if (date) {
       // Example date: "2025-09-09"
-    const start = new Date(date + 'T00:00:00');
-  const end = new Date(date + 'T23:59:59.999');
+  const [y, m, d] = date.split('-').map(Number);
+  const start = new Date(y, m - 1, d, 0, 0, 0, 0); // Start of local day
+  const end = new Date(y, m - 1, d, 23, 59, 59, 999); // End of local day
   where.created_at = { [Op.between]: [start, end] };
 }
     const count = await Report.count({ where });
