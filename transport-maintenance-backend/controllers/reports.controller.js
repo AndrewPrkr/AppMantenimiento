@@ -76,12 +76,10 @@ const getReportsPaginated = async (req, res) => {
 
     if (date) {
       // Example date: "2025-09-09"
-      const start = new Date(date);
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
-      where.created_at = { [Op.between]: [start, end] };
-    }
-
+    const start = new Date(date + 'T00:00:00');
+  const end = new Date(date + 'T23:59:59.999');
+  where.created_at = { [Op.between]: [start, end] };
+}
     const count = await Report.count({ where });
     const totalPages = Math.max(1, Math.ceil(count / pageSize));
 
