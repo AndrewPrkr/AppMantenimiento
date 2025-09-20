@@ -12,21 +12,25 @@ import { Report } from '../../models/report.model';
   selector: 'app-consultar-reportes',
   imports: [CommonModule],
   templateUrl: './consultar-reportes.html',
-  styleUrl: './consultar-reportes.css'
+  styleUrl: './consultar-reportes.css',
 })
 export class ConsultarReportes implements OnInit {
   reports: Report[] = [];
-  filteredReports: Report[] = [];
   date!: Observable<Date>;
   currentUser: any;
-  selectedStatus: string = 'ALL';
+  statusFilter = 'ALL';
+  selectedDate: string = '';
   isLoading = true;
+  errorMessage = '';
+  page = 1;
+  pageSize = 5;
+  totalPages = 1;
 
   statusOptions = [
-    { value: 'ALL', label: 'Todos los reportes' },
+    { value: 'ALL', label: 'Todos' },
     { value: 'REVISION', label: 'En revisión' },
     { value: 'ASIGNADO', label: 'Asignados' },
-    { value: 'FINALIZADO', label: 'Finalizados' }
+    { value: 'FINALIZADO', label: 'Finalizados' },
   ];
 
   constructor(
@@ -43,46 +47,54 @@ export class ConsultarReportes implements OnInit {
   }
 
   loadReports() {
-    this.reportsService.getReports().subscribe({
-      next: (reports) => {
-        this.reports = reports;
-        this.filterReports();
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading reports:', error);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  filterReports() {
-    if (this.selectedStatus === 'ALL') {
-      this.filteredReports = this.reports;
-    } else {
-      this.filteredReports = this.reports.filter(report => report.status === this.selectedStatus);
-    }
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.reportsService
+      .getReportsPaginated(this.page, this.pageSize, this.statusFilter, this.selectedDate)
+      .subscribe({
+        next: (response) => {
+          this.reports = response.reports;
+          this.totalPages = response.totalPages;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.errorMessage = 'Error al cargar los reportes';
+          this.isLoading = false;
+        },
+      });
   }
 
   onStatusChange(event: any) {
-    this.selectedStatus = event.target.value;
-    this.filterReports();
+    this.statusFilter = event.target.value;
+    this.page = 1;
+    this.loadReports();
   }
 
-  getStatusBadgeClass(status: string): string {
-    switch (status) {
-      case 'REVISION':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'ASIGNADO':
-        return 'bg-blue-100 text-blue-800';
-      case 'FINALIZADO':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+  onDateChange(event: any) {
+    this.selectedDate = event.target.value;
+    this.page = 1;
+    this.loadReports();
+  }
+
+  pageLeft() {
+    if (this.page > 1) {
+      this.page--;
+      this.loadReports();
+    }
+  }
+  pageRight() {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadReports();
     }
   }
 
   goBack() {
     this.router.navigate(['/operador']);
+  }
+
+  // For admin, optionally show all reports (if role is admin)
+  isAdmin(): boolean {
+    return this.currentUser?.role === 'Administrativo';
   }
 }

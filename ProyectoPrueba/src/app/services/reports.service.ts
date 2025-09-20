@@ -45,5 +45,12 @@ export class ReportsService {
     
     return throwError(() => new Error(errorMessage));
   }
+  getReportsPaginated(page: number, pageSize: number, status: string, date: string): Observable<any> {
+  let params: any = { page, pageSize };
+  if (status && status !== 'ALL') params.status = status;
+  if (date) params.date = date;
+  return this.http.get<any>(`${this.apiUrl}/reports/paginated`, { params });
+}
+
 }
 

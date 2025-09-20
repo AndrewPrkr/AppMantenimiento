@@ -12,4 +12,6 @@ router.get('/', [verifyToken], reportsController.getReports);
 // GET /api/reports/:id - Get single report
 router.get('/:id', [verifyToken], reportsController.getReportById);
 
+router.get('/paginated', [verifyToken], reportsController.getReportsPaginated);
+
 module.exports = router;
