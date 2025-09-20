@@ -25,6 +25,7 @@ export class ConsultarReportes implements OnInit {
   page = 1;
   pageSize = 5;
   totalPages = 1;
+  totalReports = 0;
 
   statusOptions = [
     { value: 'ALL', label: 'Todos' },
@@ -55,6 +56,7 @@ export class ConsultarReportes implements OnInit {
         next: (response) => {
           this.reports = response.reports;
           this.totalPages = response.totalPages;
+          this.totalReports = response.totalReports;
           this.isLoading = false;
         },
         error: (error) => {
@@ -93,8 +95,12 @@ export class ConsultarReportes implements OnInit {
     this.router.navigate(['/operador']);
   }
 
-  // For admin, optionally show all reports (if role is admin)
   isAdmin(): boolean {
     return this.currentUser?.role === 'Administrativo';
+  }
+
+  // Calculate cumulative shown report count for display
+  get reportsShownCount(): number {
+    return Math.min(this.page * this.pageSize, this.totalReports);
   }
 }
