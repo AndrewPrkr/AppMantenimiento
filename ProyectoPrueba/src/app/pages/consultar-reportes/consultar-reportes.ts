@@ -46,7 +46,11 @@ export class ConsultarReportes implements OnInit {
     this.currentUser = this.storageService.getUser();
     this.loadReports();
   }
-
+ logout() {
+    // Clear session data with your auth/storage service
+    this.storageService.clean(); // ensure this method wipes session and token
+    this.router.navigate(['/login']); // redirect to login
+  }
   loadReports() {
     this.isLoading = true;
     this.errorMessage = '';

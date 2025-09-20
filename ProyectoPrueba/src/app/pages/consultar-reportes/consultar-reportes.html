@@ -83,13 +83,18 @@
   Mostrando {{ page * pageSize < totalReports ? page * pageSize : totalReports }} reportes de {{ totalReports }}
 </div>
 
-  </div>
-  <div class="w-full max-w-4xl mt-6">
-    <button (click)="goBack()"
-      class="bg-gray-500 text-white py-3 px-6 rounded-md font-semibold hover:bg-gray-600 transition">
-      Volver
-    </button>
-  </div>
+ <div class="w-full max-w-4xl mt-6 flex justify-between items-center">
+  <button (click)="goBack()"
+    class="text-white py-3 px-6 ml-5 rounded-md font-semibold bg-green-600 hover:bg-green-700 transition">
+    Generar Nuevo Reporte
+  </button>
+
+  <button (click)="logout()"
+    class="text-white text-lg font-semibold rounded-md mr-5 py-3 px-6 shadow-lg hover:from-red-900 hover:to-red-700 transition bg-gradient-to-r from-red-700 to-red-500">
+    Cerrar sesión
+  </button>
+</div>
+
   <div class="mt-6 text-sm text-gray-700 text-center">
     <p>Practicante Andres Saenz Olivas <span class="font-semibold text-blue-600">2025</span></p>
   </div>
